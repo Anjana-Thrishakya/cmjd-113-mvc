@@ -86,6 +86,11 @@ public class ItemView extends javax.swing.JFrame {
 
         btnSave.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         btnUpdate.setText("Update");
@@ -184,6 +189,10 @@ public class ItemView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        saveItem();
+    }//GEN-LAST:event_btnSaveActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -250,6 +259,32 @@ public class ItemView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
         
+    }
+
+    private void saveItem() {
+        ItemDto itemDto = new ItemDto(txtCode.getText(),
+                txtDesc.getText(),
+                txtPack.getText(),
+                Double.parseDouble(txtPrice.getText()), 
+                Integer.parseInt(txtQoh.getText()));
+        
+        try {
+            String resp = itemController.saveItem(itemDto);
+            JOptionPane.showMessageDialog(this, resp);
+            loadTable();
+            clear();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+                
+    }
+
+    private void clear() {
+        txtCode.setText("");
+        txtDesc.setText("");
+        txtPack.setText("");
+        txtPrice.setText("");
+        txtQoh.setText("");
     }
 
 }
