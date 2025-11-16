@@ -6,10 +6,14 @@ package edu.ijse.mvc.view;
 
 import edu.ijse.mvc.controller.CustomerController;
 import edu.ijse.mvc.controller.ItemController;
+import edu.ijse.mvc.controller.OrderController;
 import edu.ijse.mvc.dto.CustomerDto;
 import edu.ijse.mvc.dto.ItemDto;
 import edu.ijse.mvc.dto.OrderDetailDto;
+import edu.ijse.mvc.dto.OrderDto;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,6 +27,7 @@ public class OrderView extends javax.swing.JFrame {
 
     private ItemController itemController = new ItemController();
     private CustomerController customerController = new CustomerController();
+    private OrderController orderController = new OrderController();
     private ArrayList<OrderDetailDto> orderDetailDtos = new ArrayList<>();
     /**
      * Creates new form OrderView
@@ -243,7 +248,7 @@ public class OrderView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnItemSearch1ActionPerformed
 
     private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
-        // TODO add your handling code here:
+        placeOrder();
     }//GEN-LAST:event_btnPlaceOrderActionPerformed
 
 
@@ -325,5 +330,18 @@ public class OrderView extends javax.swing.JFrame {
         txtQty.setText("");
         txtDiscount.setText("");
         lblItemData.setText("");
+    }
+
+    private void placeOrder() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = sdf.format(new Date());
+        OrderDto orderDto = new OrderDto(txtOid.getText(), dateString, txtCid.getText());
+        
+        try {
+            String resp = orderController.placeOrder(orderDto, orderDetailDtos);
+            JOptionPane.showMessageDialog(this, resp);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }
 }
