@@ -4,6 +4,12 @@
  */
 package edu.ijse.mvc.view;
 
+import edu.ijse.mvc.controller.CustomerController;
+import edu.ijse.mvc.controller.ItemController;
+import edu.ijse.mvc.dto.CustomerDto;
+import edu.ijse.mvc.dto.ItemDto;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Anjana
@@ -12,10 +18,12 @@ public class OrderView extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(OrderView.class.getName());
 
+    private ItemController itemController = new ItemController();
+    private CustomerController customerController = new CustomerController();
     /**
      * Creates new form OrderView
      */
-    public OrderView() {
+    public OrderView() throws Exception{
         initComponents();
     }
 
@@ -133,7 +141,7 @@ public class OrderView extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblHeader, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
+            .addComponent(lblHeader, javax.swing.GroupLayout.DEFAULT_SIZE, 1164, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,7 +226,7 @@ public class OrderView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCustSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustSearchActionPerformed
-       
+        searchCustomer();
     }//GEN-LAST:event_btnCustSearchActionPerformed
 
     private void btnAddToTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToTableActionPerformed
@@ -226,37 +234,13 @@ public class OrderView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddToTableActionPerformed
 
     private void btnItemSearch1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemSearch1ActionPerformed
-        // TODO add your handling code here:
+        searchItem();
     }//GEN-LAST:event_btnItemSearch1ActionPerformed
 
     private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPlaceOrderActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new OrderView().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddToTable;
@@ -280,4 +264,32 @@ public class OrderView extends javax.swing.JFrame {
     private javax.swing.JTextField txtOid;
     private javax.swing.JTextField txtQty;
     // End of variables declaration//GEN-END:variables
+
+    private void searchCustomer() {
+        String custId = txtCid.getText();
+        try {
+            CustomerDto customerDto = customerController.searchCustomer(custId);
+            if(customerDto != null){
+                lblCustData.setText(customerDto.getTitle() + ". " + customerDto.getName());
+            } else {
+                lblCustData.setText("Customer Not Found");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    private void searchItem() {
+        String itemCode = txtItemCode.getText();
+        try {
+            ItemDto itemDto = itemController.searchItem(itemCode);
+            if(itemDto != null){
+                lblItemData.setText(itemDto.getDesc() + " | " + itemDto.getPack() + " | " + itemDto.getQoh() + " | " + itemDto.getPrice());
+            } else {
+                lblItemData.setText("Item Not Found");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
 }
