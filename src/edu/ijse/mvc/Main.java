@@ -4,6 +4,7 @@
  */
 package edu.ijse.mvc;
 
+import edu.ijse.mvc.view.CustomerView;
 import edu.ijse.mvc.view.ItemView;
 
 /**
@@ -15,8 +16,8 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        new ItemView().setVisible(true);
+    public static void main(String[] args) throws Exception {
+        new CustomerView().setVisible(true);
     }
     
 }
