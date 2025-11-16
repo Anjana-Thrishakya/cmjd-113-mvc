@@ -8,7 +8,10 @@ import edu.ijse.mvc.controller.CustomerController;
 import edu.ijse.mvc.controller.ItemController;
 import edu.ijse.mvc.dto.CustomerDto;
 import edu.ijse.mvc.dto.ItemDto;
+import edu.ijse.mvc.dto.OrderDetailDto;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,11 +23,13 @@ public class OrderView extends javax.swing.JFrame {
 
     private ItemController itemController = new ItemController();
     private CustomerController customerController = new CustomerController();
+    private ArrayList<OrderDetailDto> orderDetailDtos = new ArrayList<>();
     /**
      * Creates new form OrderView
      */
     public OrderView() throws Exception{
         initComponents();
+        loadTable();
     }
 
     /**
@@ -230,7 +235,7 @@ public class OrderView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCustSearchActionPerformed
 
     private void btnAddToTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToTableActionPerformed
-        // TODO add your handling code here:
+        addToTable();
     }//GEN-LAST:event_btnAddToTableActionPerformed
 
     private void btnItemSearch1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemSearch1ActionPerformed
@@ -291,5 +296,34 @@ public class OrderView extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
+    }
+    
+    private void loadTable(){
+        String columns[] = {"Item Code", "Qty", "Discount"};
+        DefaultTableModel dtm = new DefaultTableModel(columns, 0){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tblCart.setModel(dtm);
+        
+    }
+
+    private void addToTable() {
+        OrderDetailDto orderDetailDto = new OrderDetailDto(txtItemCode.getText(),
+                Integer.parseInt(txtQty.getText()), Integer.parseInt(txtDiscount.getText()));
+        this.orderDetailDtos.add(orderDetailDto);
+        Object[] rowData = {orderDetailDto.getItemCode(), orderDetailDto.getQty(), orderDetailDto.getDicount()};
+        DefaultTableModel dtm = (DefaultTableModel) tblCart.getModel();
+        dtm.addRow(rowData);
+        clear();
+    }
+
+    private void clear() {
+        txtItemCode.setText("");
+        txtQty.setText("");
+        txtDiscount.setText("");
+        lblItemData.setText("");
     }
 }
