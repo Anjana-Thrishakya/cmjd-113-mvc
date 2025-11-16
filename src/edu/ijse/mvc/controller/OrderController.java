@@ -6,6 +6,7 @@ package edu.ijse.mvc.controller;
 
 import edu.ijse.mvc.dto.OrderDetailDto;
 import edu.ijse.mvc.dto.OrderDto;
+import edu.ijse.mvc.model.OrderModel;
 import java.util.ArrayList;
 
 /**
@@ -14,8 +15,10 @@ import java.util.ArrayList;
  */
 public class OrderController {
     
+    private OrderModel orderModel = new OrderModel();
+    
     public String placeOrder(OrderDto orderDto, ArrayList<OrderDetailDto> detailDtos) throws Exception{
-        return null;
+        return orderModel.placeOrder(orderDto, detailDtos);
     }
     
 }
